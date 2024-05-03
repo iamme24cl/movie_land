@@ -17,7 +17,7 @@ def model_train():
         (ratings_df["userId"], ratings_df["movieId"])
     ))
     als_model = AlternatingLeastSquares(
-        factors=50, regularization=0.01, dtype=np.float64, iterations=1
+        factors=50, regularization=0.01, dtype=np.float64, iterations=50
     )
     als_model.fit(weight*rating_matrix)
     pickle.dump(als_model, open(saved_model,"wb"))
@@ -79,6 +79,5 @@ def user_based_recommendation(userId):
     result_items = movies_df[movies_df["movieId"]. isin(result)].to_dict("records")    
     return result_items 
     
-
 if __name__ == "__main__":
     model = model_train()
