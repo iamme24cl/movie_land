@@ -40,8 +40,7 @@ def movie_based_recommendation(movie_id):
     except KeyError as e:
         result = []
     
-    result = [int(x) for x in result if x != movie_id]
-    result.pop(0) # remove the movie with item_id
+    result = [int(x) for x in result if x != str(movie_id)]
     result_items = movies_df[movies_df["movieId"].isin(result)].to_dict("records")
     return result_items
 
