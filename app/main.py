@@ -28,9 +28,9 @@ async def genre_movies(genre: str):
     result = random_genres_movies(genre)
     return {"result": result}
 
-@app.get("/movie-based/{item_id}")
-async def item_based(item_id: str):
-    result = movie_based_recommendation(item_id)
+@app.get("/movie-based/{movie_id}")
+async def item_based(movie_id):
+    result = movie_based_recommendation(movie_id)
     return {"result": result}
 
 @app.get("/user-based/{user_id}")
