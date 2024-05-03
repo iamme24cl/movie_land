@@ -1,14 +1,12 @@
 FROM python:3
-
 EXPOSE 80
-
-WORKDIR /app
-
+COPY ./app /app
 COPY requirements.txt /app/requirements.txt
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
+WORKDIR /app
+RUN python3 -m pip install --no-cache-dir --upgrade \
+    setuptools \
+    wheel \
+    && \
+python3 -m pip install --trusted-host pypi.python.org -r requirements.txt
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
 
