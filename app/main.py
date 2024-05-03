@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from resolver import random_movies, random_genres_movies
-from recommender import movie_based_recommendation
+from recommender import movie_based_recommendation, user_based_recommendation
 
 app = FastAPI()
 
@@ -21,4 +21,9 @@ async def genre_movies(genre: str):
 @app.get("/movie-based/{item_id}")
 async def item_based(item_id: str):
     result = movie_based_recommendation(item_id)
+    return {"result": result}
+
+@app.get("/user-based/{user_id}")
+async def user_based(user_id):
+    result = user_based_recommendation(user_id)
     return {"result": result}

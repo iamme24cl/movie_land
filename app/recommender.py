@@ -45,5 +45,40 @@ def movie_based_recommendation(movie_id):
     result_items = movies_df[movies_df["movieId"].isin(result)].to_dict("records")
     return result_items
 
+def calculate_user_based(user_items, items, userId):
+    loaded_model = pickle.load(open(saved_model,"rb"))
+    recs = loaded_model.recommend(userid=userId, user_items=user_items, recalculate_user=True, N=10)
+    return [str(items[r]) for r in recs[0]]
+
+def build_matrix_input(rating_dict, items):
+    model = pickle.load(open(saved_model,"rb"))
+    item_ids = {r: i for i, r in enumerate(items.values())}
+    mapped_idx = [item_ids[s] for s in rating_dict.keys() if s in item_ids]
+    data = [weight*float(x) for x in rating_dict.values()]
+    
+    rows = [0 for _ in mapped_idx]
+    shape = (1, model.item_factors.shape[0])
+    coo_mat = coo_matrix((data, (rows, mapped_idx)), shape=shape)
+    return coo_mat.tocsr() 
+
+def user_based_recommendation(userId):
+    ratings_df = pd.read_csv(ratings)
+    ratings_df["userId"] = ratings_df["userId"].astype("category")
+    ratings_df["movieId"] = ratings_df["movieId"].astype("category")
+    movies_df = pd.read_csv(movies)
+    items = dict(enumerate(ratings_df["movieId"].cat.categories))  
+    user_ratings = ratings_df[ratings_df["userId"] == int(userId)][["movieId", "rating"]]
+    rating_list = []
+    for ind in user_ratings.index:
+        rating = str(user_ratings["movieId"][ind]) + ":" + str(user_ratings["rating"][ind])
+        rating_list.append(rating)
+    rating_dict = dict((int(x.split(":")[0]), float(x.split(":")[1])) for x in rating_list)
+    input_matrix = build_matrix_input(rating_dict, items)
+    result = calculate_user_based(input_matrix, items, userId)
+    result = [int(x) for x in result]
+    result_items = movies_df[movies_df["movieId"]. isin(result)].to_dict("records")    
+    return result_items 
+    
+
 if __name__ == "__main__":
     model = model_train()
