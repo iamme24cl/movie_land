@@ -12,5 +12,5 @@ def random_genres_movies(genre):
     movies_df = pd.read_csv(item_fname)
     genre_df = movies_df[movies_df["genres"].apply(lambda x: genre in x.lower())]
     genre_df = genre_df.fillna('')
-    result_items = genre_df.sample(n=10).to_dict("records")
+    result_items = genre_df.sample(n=30).to_dict("records")
     return result_items
