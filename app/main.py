@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from resolver import random_movies, random_genres_movies
+from resolver import random_movies, random_genres_movies, user_login
 from recommender import movie_based_recommendation, user_based_recommendation
+from pydantic import BaseModel
 
 app = FastAPI()
 origins = ["*"]
@@ -36,4 +37,13 @@ async def item_based(movie_id):
 @app.get("/user-based/{user_id}")
 async def user_based(user_id):
     result = user_based_recommendation(user_id)
+    return {"result": result}
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+@app.post("/login")
+async def login(loginParams: UserLogin):
+    result = user_login(loginParams.email, loginParams.password)
     return {"result": result}

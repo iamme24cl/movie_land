@@ -1,6 +1,7 @@
 import pandas as pd
 
 item_fname = "data/movies_final.csv"
+users_fname = "data/users.csv"
 
 def random_movies():
     movies_df = pd.read_csv(item_fname)
@@ -14,3 +15,14 @@ def random_genres_movies(genre):
     genre_df = genre_df.fillna('')
     result_items = genre_df.sample(n=30).to_dict("records")
     return result_items
+
+def user_login(email, password):
+    user_df = pd.read_csv(users_fname)
+    
+    user_exists = user_df[(user_df['email'] == email) & (user_df['password'] == password)]
+    if not user_exists.empty:
+        users = user_exists.to_dict("records")
+        return users[0]
+    else:
+        msg = "No user found with given email and password"
+        return {"message": msg}
