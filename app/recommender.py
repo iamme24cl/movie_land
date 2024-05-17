@@ -77,6 +77,18 @@ def user_based_recommendation(userId):
     result = [int(x) for x in result]
     result_items = movies_df[movies_df["movieId"]. isin(result)].to_dict("records")    
     return result_items 
+
+def user_rating_based_recommendation(input_rating):
+    ratings_df = pd.read_csv(ratings)
+    ratings_df["userId"] = ratings_df["userId"].astype("category")
+    ratings_df["movieId"] = ratings_df["movieId"].astype("category")
+    movies_df = pd.read_csv(movies)
+    items = dict(enumerate(ratings_df["movieId"].cat.categories))  
+    input_matrix = build_matrix_input(input_rating, items)
+    result = calculate_user_based(input_matrix, items, 0)
+    result = [int(x) for x in result]
+    result_items = movies_df[movies_df["movieId"]. isin(result)].to_dict("records")    
+    return result_items 
     
 if __name__ == "__main__":
     model = model_train()

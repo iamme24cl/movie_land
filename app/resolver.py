@@ -24,5 +24,4 @@ def user_login(email, password):
         users = user_exists.to_dict("records")
         return users[0]
     else:
-        msg = "No user found with given email and password"
-        return {"message": msg}
+        return {}
