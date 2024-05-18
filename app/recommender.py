@@ -47,7 +47,7 @@ def movie_based_recommendation(movie_id):
 def calculate_user_based(user_items, items, userId):
     loaded_model = pickle.load(open(saved_model,"rb"))
     recs = loaded_model.recommend(userid=userId, user_items=user_items, recalculate_user=True, N=10)
-    return [str(items[r]) for r in recs[0]]
+    return [str(items[r]) for r in recs[0] if r in items]
 
 def build_matrix_input(rating_dict, items):
     model = pickle.load(open(saved_model,"rb"))
@@ -79,6 +79,7 @@ def user_based_recommendation(userId):
     return result_items 
 
 def user_rating_based_recommendation(input_rating):
+    print(f"input_rating dict => {input_rating}")
     ratings_df = pd.read_csv(ratings)
     ratings_df["userId"] = ratings_df["userId"].astype("category")
     ratings_df["movieId"] = ratings_df["movieId"].astype("category")
