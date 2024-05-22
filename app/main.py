@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from typing import List, Optional
 from fastapi.middleware.cors import CORSMiddleware
 from resolver import random_movies, random_genres_movies, user_login
-from recommender import movie_based_recommendation, user_based_recommendation, user_rating_based_recommendation
+from recommender import movie_based_recommendation, user_based_recommendation, user_rating_based_recommendation, matching_movies
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -45,6 +45,11 @@ async def user_based(user_id):
 async def user_rating_based(params: Optional[List[str]] = Query(None)):
     input_rating_dict = dict((int(x.split(":")[0]), float(x.split(":")[1])) for x in params)
     result = user_rating_based_recommendation(input_rating_dict)
+    return JSONResponse(status_code=200, content={"success": True, "data": result})
+
+@app.get("/search")
+async def search_movies(query: str = Query(...)):
+    result = matching_movies(query)
     return JSONResponse(status_code=200, content={"success": True, "data": result})
 
 class UserLogin(BaseModel):

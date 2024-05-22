@@ -90,6 +90,12 @@ def user_rating_based_recommendation(input_rating):
     result = [int(x) for x in result]
     result_items = movies_df[movies_df["movieId"]. isin(result)].to_dict("records")    
     return result_items 
+
+def matching_movies(query: str):
+    movies_df = pd.read_csv(movies)
+    movies_df = movies_df.fillna('') # To fill the blank
+    matching_result = movies_df[movies_df['title'].str.contains(query, case=False, na=False)]
+    return matching_result.to_dict("records")
     
 if __name__ == "__main__":
     model = model_train()
