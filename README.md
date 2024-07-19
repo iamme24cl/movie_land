@@ -19,3 +19,17 @@ The Movie Recommender App is designed to suggest movies to users based on their 
 ## Links to Repositories
 
 - [Frontend Repository](https://github.com/iamme24cl/movie-land-app)
+
+## Application Images
+
+### Home Page
+
+![Home Page](public/home.jpg)
+
+### Projects Section
+
+![Projects Section](public/projects.jpg)
+
+### Contact Section
+
+![Contact Section](public/contact.jpg)
