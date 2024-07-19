@@ -16,6 +16,10 @@ The Movie Recommender App is designed to suggest movies to users based on their 
 - **React**: A JavaScript library for building user interfaces.
 - **Material UI**: A popular React UI framework.
 
+## Demo
+
+Check out the live demo of the Application [here](https://movie-land-app.pages.dev/).
+
 ## Links to Repositories
 
 - [Frontend Repository](https://github.com/iamme24cl/movie-land-app)
